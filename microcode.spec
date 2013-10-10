@@ -1,15 +1,14 @@
-Summary:   Intel P6 / AMD CPU Microcode 
-Name:      microcode
-Version:   0.20100204
-Release:   %mkrel 1
-Group:     System/Kernel and hardware
-License:   Distributable
+Summary:	Intel P6 / AMD CPU Microcode 
+Name:		microcode
+Version:	0.20131009
+Release:	1
+Group:		System/Kernel and hardware
+License:	Distributable
 # use update-intel-microcode --download-only (from microcode_ctl) to update
-Source0:   intel-microcode.dat
-# use update-amdl-microcode --download-only (from microcode_ctl) to update
-Source1:   amd-ucode-latest.tar
-Buildroot: %_tmppath/%name-%version-buildroot
-ExclusiveArch: %ix86 x86_64
+Source0:	intel-microcode.dat
+# use update-amd-microcode --download-only (from microcode_ctl) to update
+Source1:	amd-ucode-latest.ta
+ExclusiveArch:	%ix86 x86_64
 
 %description
 Since PentiumPro, Intel CPU are made of a RISC chip and of a microcode whose
@@ -29,20 +28,16 @@ AMD CPU (AMD Phenom(TM), AMD Opteron(TM) and AMD Turion(TM) 64 Ultra).
 
 %build
 
-%install
-rm -rf $RPM_BUILD_ROOT 
+%install 
 
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/misc
-install -m644 %{SOURCE0} $RPM_BUILD_ROOT%{_datadir}/misc
+mkdir -p %{buildroot}/lib/firmware/intel-microcode
+install -m644 %{SOURCE0} %{buildroot}/lib/firmware/intel-microcode
 
-mkdir -p $RPM_BUILD_ROOT/lib/firmware/amd-ucode 
-tar xf %{SOURCE1} -C $RPM_BUILD_ROOT/lib/firmware/amd-ucode
-
-%clean
-rm -r $RPM_BUILD_ROOT
+tar xf %{SOURCE1} -C %{buildroot}/lib/firmware
+mv %{buildroot}/lib/firmware/amd-ucode-2012-09-10 %{buildroot}/lib/firmware/amd-ucode
 
 %files
 %defattr(-,root,root,-)
 /lib/firmware/amd-ucode
-%{_datadir}/misc/intel-microcode.dat
+/lib/firmware/intel-microcode/intel-microcode.dat
 
