@@ -1,14 +1,13 @@
-Summary:	Intel P6 / AMD CPU Microcode 
+Summary:	Intel P6 CPU Microcode 
 Name:		microcode
-Version:	0.20131009
+Version:	0.20131016
 Release:	1
 Group:		System/Kernel and hardware
 License:	Distributable
 # use update-intel-microcode --download-only (from microcode_ctl) to update
 Source0:	intel-microcode.dat
-# use update-amd-microcode --download-only (from microcode_ctl) to update
-Source1:	amd-ucode-latest.ta
-ExclusiveArch:	%ix86 x86_64
+# AMD microcode comes from kernel-firmware-extra these days.
+BuildArch: noarch
 
 %description
 Since PentiumPro, Intel CPU are made of a RISC chip and of a microcode whose
@@ -20,8 +19,10 @@ The microcode update is volatile and needs to be uploaded on each system
 boot. I.e. it doesn't reflash your cpu permanently.
 Reboot and it reverts back to the old microcode.
 
-This package contains microcode for Intel CPU, as well as microcode for 
-AMD CPU (AMD Phenom(TM), AMD Opteron(TM) and AMD Turion(TM) 64 Ultra).
+This package contains microcode for Intel CPU.
+
+Microcode updates for AMD CPUs can be found in the
+kernel-firmware-extra package.
 
 %prep
 %setup -q -T -c
@@ -33,11 +34,7 @@ AMD CPU (AMD Phenom(TM), AMD Opteron(TM) and AMD Turion(TM) 64 Ultra).
 mkdir -p %{buildroot}/lib/firmware/intel-microcode
 install -m644 %{SOURCE0} %{buildroot}/lib/firmware/intel-microcode
 
-tar xf %{SOURCE1} -C %{buildroot}/lib/firmware
-mv %{buildroot}/lib/firmware/amd-ucode-2012-09-10 %{buildroot}/lib/firmware/amd-ucode
-
 %files
 %defattr(-,root,root,-)
-/lib/firmware/amd-ucode
 /lib/firmware/intel-microcode/intel-microcode.dat
 
