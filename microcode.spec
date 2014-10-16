@@ -1,7 +1,7 @@
 Summary:	Intel P6 CPU Microcode 
 Name:		microcode
 Version:	0.20140323
-Release:	1
+Release:	2
 Group:		System/Kernel and hardware
 License:	Distributable
 # use update-intel-microcode --download-only (from microcode_ctl) to update
